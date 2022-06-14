@@ -10,26 +10,25 @@ contract MatrixMultDiverse {
         owner = msg.sender;
     }
 
-    function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
-        if (_i == 0) {
+`   // Inspired by OraclizeAPI's implementation - MIT licence
+    // https://github.com/oraclize/ethereum-api/blob/b42146b063c7d6ee1358846c198246239e9360e8/oraclizeAPI_0.4.25.sol
+    function toString(uint256 value) internal pure returns (string memory) {
+        if (value == 0) {
             return "0";
         }
-        uint j = _i;
-        uint len;
-        while (j != 0) {
-            len++;
-            j /= 10;
+        uint256 temp = value;
+        uint256 digits;
+        while (temp != 0) {
+            digits++;
+            temp /= 10;
         }
-        bytes memory bstr = new bytes(len);
-        uint k = len;
-        while (_i != 0) {
-            k = k-1;
-            uint8 temp = (48 + uint8(_i - _i / 10 * 10));
-            bytes1 b1 = bytes1(temp);
-            bstr[k] = b1;
-            _i /= 10;
+        bytes memory buffer = new bytes(digits);
+        while (value != 0) {
+            digits -= 1;
+            buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
+            value /= 10;
         }
-        return string(bstr);
+        return string(buffer);
     }
 
     function makeString3x3(uint[3][3] memory a) internal{
@@ -40,7 +39,7 @@ contract MatrixMultDiverse {
                 if(i == 1  && j == 0|| i == 2 && j==0){
                     matrix = string(abi.encodePacked(matrix," | "));
                 }
-                string memory num = uint2str(a[i][j]);
+                string memory num = toString(a[i][j]);
                 if(j != 2){
                     temp = string(abi.encodePacked(num,","));
                 }else{
@@ -61,7 +60,7 @@ contract MatrixMultDiverse {
                 if(i == 1  && j == 0|| i == 2 && j==0){
                     matrix = string(abi.encodePacked(matrix," | "));
                 }
-                string memory num = uint2str(a[i][j]);
+                string memory num = toString(a[i][j]);
                 if(j != 2){
                     temp = string(abi.encodePacked(num,","));
                 }else{
@@ -82,7 +81,7 @@ contract MatrixMultDiverse {
                 if(i == 1  && j == 0|| i == 2 && j==0){
                     matrix = string(abi.encodePacked(matrix," | "));
                 }
-                string memory num = uint2str(a[i][j]);
+                string memory num = toString(a[i][j]);
                 if(j != 2){
                     temp = string(abi.encodePacked(num,","));
                 }else{
